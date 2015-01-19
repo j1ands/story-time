@@ -9,6 +9,17 @@ angular.module('storytimeApp')
       socket.syncUpdates('thing', $scope.awesomeThings);
     });
 
+    $scope.alchemyThings;
+    $scope.nytThings;
+
+    $http.get('/api/alchemy').success(function(things){
+      $scope.alchemyThings = things;
+    })
+
+    $http.get('/api/nyt').success(function(things){
+      $scope.nytThings = things;
+    })
+
     $scope.addThing = function() {
       if($scope.newThing === '') {
         return;

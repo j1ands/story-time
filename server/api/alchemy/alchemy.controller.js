@@ -2,14 +2,23 @@
 
 var _ = require('lodash');
 var Alchemy = require('./alchemy.model');
+var AlchemyAPI = require('./alchemyapi');
+var alchemyapi = new AlchemyAPI();
 
 // Get list of alchemys
+// exports.index = function(req, res) {
+//   Alchemy.find(function (err, alchemys) {
+//     if(err) { return handleError(res, err); }
+//     return res.json(200, alchemys);
+//   });
+// };
+var myText = "Whoa, AlchemyAPI's Node.js SDK is really great, I can't wait to build my app!";
+
 exports.index = function(req, res) {
-  Alchemy.find(function (err, alchemys) {
-    if(err) { return handleError(res, err); }
-    return res.json(200, alchemys);
+  alchemyapi.sentiment("text", myText, {}, function(response) {
+    res.json(200, "Sentiment: " + response["docSentiment"]["type"]);
   });
-};
+}
 
 // Get a single alchemy
 exports.show = function(req, res) {
