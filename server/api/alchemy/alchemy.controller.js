@@ -16,7 +16,10 @@ var myText = "Whoa, AlchemyAPI's Node.js SDK is really great, I can't wait to bu
 
 exports.index = function(req, res) {
   alchemyapi.sentiment("text", myText, {}, function(response) {
-    res.json(200, "Sentiment: " + response["docSentiment"]["type"]);
+    console.log(response);
+    //res.send(200, "Sentiment: " + response["docSentiment"]["type"]);
+    res.json(200, response);
+
   });
 }
 

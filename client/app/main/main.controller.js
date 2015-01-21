@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('storytimeApp')
-  .controller('MainCtrl', function ($scope, $http, socket) {
+  .controller('MainCtrl', function ($scope, $http, socket, nytApi, alchemyApi) {
     $scope.awesomeThings = [];
 
     $http.get('/api/things').success(function(awesomeThings) {
@@ -12,13 +12,9 @@ angular.module('storytimeApp')
     $scope.alchemyThings;
     $scope.nytThings;
 
-    $http.get('/api/alchemy').success(function(things){
-      $scope.alchemyThings = things;
-    })
+    $scope.alchemyThings = alchemyApi.get();
 
-    $http.get('/api/nyt').success(function(things){
-      $scope.nytThings = things;
-    })
+    //$scope.nytThings = nytApi.get();
 
     $scope.addThing = function() {
       if($scope.newThing === '') {
