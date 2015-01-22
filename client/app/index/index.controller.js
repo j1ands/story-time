@@ -2,16 +2,22 @@
 
 angular.module('storytimeApp')
   .controller('IndexCtrl', function ($scope, nytApi, alchemyApi) {
-    $scope.message = 'Hello';
+    
+    var ictrl = this;
 
-    $scope.alchemyThings;
-    $scope.nytThings;
+    ictrl.alchemyThings;
+    ictrl.nytThings;
 
-    //debugger;
-    $scope.alchemyThings = alchemyApi.get();
-    //debugger;
-    console.log($scope.alchemyThings);
+    ictrl.goToLogin = false;
 
+    ictrl.login = function()
+    {
+    	ictrl.goToLogin = true;
+    }
+
+
+
+    //$scope.alchemyThings = alchemyApi.get();
     //$scope.nytThings = nytApi.get();
 
   });

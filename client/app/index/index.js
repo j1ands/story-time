@@ -6,6 +6,6 @@ angular.module('storytimeApp')
       .state('index', {
         url: '/',
         templateUrl: 'app/index/index.html',
-        controller: 'IndexCtrl'
+        controller: 'IndexCtrl as Index'
       });
   });

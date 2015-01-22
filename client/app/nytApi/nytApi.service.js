@@ -1,21 +1,13 @@
 'use strict';
 
 angular.module('storytimeApp')
-  .factory('nytApi', function ($http) {
+  .factory('nytApi', function ($resource) {
     // Service logic
     // ...
 
     function nytCall(params)
     {
-      $http.get('/api/nyt')
-        .success(function(things)
-        {
-          return things;
-        })
-        .error(function(error)
-        {
-          throw error;
-        });
+      return $resource('/api/nyt').get();
     }
 
     // Public API here
