@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('storytimeApp')
-  .directive('login', function () {
+  .directive('storytype', function () {
     return {
-      templateUrl: 'app/account/login/login.html',
+      templateUrl: 'app/storytype/storytype.html',
       restrict: 'EA',
       link: function (scope, element, attrs) {
       }

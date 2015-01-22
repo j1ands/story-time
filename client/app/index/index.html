@@ -1,14 +1,17 @@
 <div class="container" id="main-container">
 	<div class="jumbotron" id="main-jumbo">
-		<div class="row" id="title-row">
-			<h1>StoryTime</h1>
+		<div class="row title-row one" id="main-title-row">
+			<h1 class="title">StoryTime</h1>
 		</div>
-		<div class="row" id="content-row">
+		<div class="row content-row one">
 		<!-- 	<h5>{{nytThings.web_url}}</h5>
 			<h3>Sentiment {{alchemyThings.docSentiment.type}}</h3>
 		 -->
-		 	<a href='#loginN' class="btn btn-success btn-lg" id="main-button" ng-click="Index.login()">Start</a>
+		 	<a href class="btn btn-success btn-lg sizzle" id="main-button" ng-click="Index.login(Index.panel.value)">Start</a>
 		</div>
-		<login ng-show="Index.goToLogin"></login>
+		<!-- <login ng-show="Index.goToLogin.value"></login> -->
+		<login></login>
+		<storytype></storytype>
+
 	</div>
 </div>
