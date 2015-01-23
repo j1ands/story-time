@@ -8,7 +8,7 @@ angular.module('storytimeApp')
     ictrl.alchemyThings;
     ictrl.nytThings;
 
-    ictrl.panel = {value: Auth.getCurrentUser() ? 'storytype' : 'login'};
+    ictrl.panel = {value: Auth.getCurrentUser().name ? 'storytype' : 'login'};
 
     // ictrl.goToLogin = {value : false};
     // ictrl.goToStory = {value: false};
