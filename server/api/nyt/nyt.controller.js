@@ -14,11 +14,14 @@ exports.index = function(req, res) {
 
 // Get a single nyt
 exports.show = function(req, res) {
-  Nyt.findById(req.params.id, function (err, nyt) {
-    if(err) { return handleError(res, err); }
-    if(!nyt) { return res.send(404); }
-    return res.json(nyt);
-  });
+  // Nyt.findById(req.params.id, function (err, nyt) {
+  //   if(err) { return handleError(res, err); }
+  //   if(!nyt) { return res.send(404); }
+  //   return res.json(nyt);
+  // });
+  nytAPI.search("fq=" + req.params.id + "&api-key=", function(content){
+    res.json(200, content.response.docs[0]);
+  })
 };
 
 // Creates a new nyt in the DB.

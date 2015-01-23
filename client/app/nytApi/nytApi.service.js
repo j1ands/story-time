@@ -7,7 +7,7 @@ angular.module('storytimeApp')
 
     function nytCall(params)
     {
-      return $resource('/api/nyt').get();
+      return $resource('/api/nyt/' + params).get();
     }
 
     // Public API here
