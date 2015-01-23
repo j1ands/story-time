@@ -18,6 +18,7 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
+  require('../api/generate/generate.socket').register(socket);
   require('../api/nyt/nyt.socket').register(socket);
   require('../api/alchemy/alchemy.socket').register(socket);
   require('../api/thing/thing.socket').register(socket);

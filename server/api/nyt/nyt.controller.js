@@ -20,6 +20,7 @@ exports.show = function(req, res) {
   //   return res.json(nyt);
   // });
   nytAPI.search("fq=" + req.params.id + "&api-key=", function(content){
+    console.log("content!, ", content);
     res.json(200, content.response.docs[0]);
   })
 };
