@@ -1,7 +1,23 @@
-<div class="container">
-	<div class="jumbotron main">
-		<h1>StoryTime</h1>
-		<h5>{{nytThings}}</h5>
-		<h3>Sentiment {{alchemyThings.docSentiment.type}}</h3>
+<!-- <div layout="column" layout-fill class="doc-content">
+	<div flex layout="column" style="z-index:1">
+		<section class="main-container md-whiteframe-z1">
+			<div layout="column" style="padding-bottom: 15px">
+				<md-toolbar class="md-accent">
+					<div class="md-toolbar-tools">
+						<span class="md-flex">StoryTime</span>
+					</div>
+				</md-toolbar>
+				<md-content class="md-padding">
+					<a href class="btn btn-success btn-lg sizzle" id="main-button" ng-click="Index.login(Index.panel.value)">Start</a>
+				</md-content>
+			</div>
+		</section>
 	</div>
-</div>
+</div> -->
+
+<storypanel title="'StoryTime'" content="'components/startbutton/startbutton.html'"></storypanel>
+<storypanel class="ng-hide" id="login" title="'Login'" content="'app/account/login/login.html'"></storypanel>
+<storypanel class="ng-hide" id="storytype" title="'Story Type'" content="'app/storytype/storytype.html'"></storypanel>
+
+<!-- <login></login>
+ -->

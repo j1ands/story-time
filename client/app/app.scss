@@ -3,6 +3,7 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 
 @import 'bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
 @import 'font-awesome/scss/font-awesome';
+@import '/bower_components/angular-material/angular-material.css';
 
 /**
  * App-wide Styles
@@ -20,6 +21,9 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 @import 'account/login/login.scss';
 @import 'admin/admin.scss';
 @import 'index/index.scss';
+@import 'login/login.scss';
 @import 'main/main.scss';
+@import 'storypanel/storypanel.scss';
+@import 'storytype/storytype.scss';
 @import 'modal/modal.scss';
 // endinjector

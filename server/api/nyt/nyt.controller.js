@@ -8,7 +8,7 @@ var nytAPI = new NYTAPI();
 // Get list of nyts
 exports.index = function(req, res) {
   nytAPI.search("fq=romney&facet_field=day_of_week&begin_date=20120101&end_date=20120101&api-key=", function(content){
-    res.json(200, content.response.docs[0].web_url);
+    res.json(200, content.response.docs[0]);
   })
 };
 

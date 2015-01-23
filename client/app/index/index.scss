@@ -1,8 +1,23 @@
-.main {
-	margin-top: 100px;
-	height: 500px;
+#main-jumbo {
+	padding: 0px;
+	margin-top: 15%;
+	margin-bottom: 15%;
+}
+
+#main-button {
+	width: 100px;
 }
 
 h1 {
 	text-align:center;
+}
+
+#main-title-row {
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+}
+
+#content-row {
+	margin-left: 0px;
+	margin-right: 0px;
 }
