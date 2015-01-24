@@ -10,7 +10,8 @@ angular.module('storytimeApp')
     // Public API here
     return {
       getNY: function () {
-        return response.ny;
+        //return response.ny;
+        return response;
       },
       setNY: function(obj) {
       	response.ny = obj;

@@ -63,89 +63,63 @@ exports.show = function(req, res) {
         {
           //console.log("response!, ", alchemyResponse);
           var article = {text: alchemyResponse.text};
-          article.real = article.text;
           //console.log("ARTCILE LENGTH", article.text.length);
 
           if(article.text.length < 1500)
           {
-            return generation();
+            generation();
           }
 
-          var entities = alchemyResponse.entities;
-          //res.json(200, response);
-          User.findById(req.params.id, function(err, user){
-            //console.log("user!, ", user);
-            //var friends = {list: user.facebook.taggable_friends};
-            var friends = [];
+          else
+          {
+            var entities = alchemyResponse.entities;
+            //res.json(200, response);
+            User.findById(req.params.id, function(err, user){
+              //console.log("user!, ", user);
+              //var friends = {list: user.facebook.taggable_friends};
+              var friends = [];
 
-            for(var i = 0; i < user.facebook.taggable_friends.data.length; i++)
-            {
-              friends[i] = user.facebook.taggable_friends.data[i].name;
-            }
-
-            randomSort(friends);
-
-            //console.log("user", user);
-            friends.unshift(user.name);
-            //console.log("facebook", user.facebook);
-
-            var people = {};
-
-            for(var key in entities)
-            {
-              console.log(key, entities[key]);
-              if(entities[key].type == "Person" && friends[0])
+              for(var i = 0; i < user.facebook.taggable_friends.data.length; i++)
               {
-                people[entities[key].text] = friends.shift();
+                friends[i] = user.facebook.taggable_friends.data[i].name;
               }
-            }
 
-            //var personFL = [];
-            //var peopleFL = [];
+              randomSort(friends);
 
-            for(var person in people)
-            {
-              var reg = new RegExp(person, "g");
+              var people = {};
 
-              article.text = article.text.replace(reg, people[person]);
-            }
-
-            for(var person in people)
-            {
-              var personFL = person.split(" ");
-              var peopleFL = people[person].split(" ");
-              console.log("person " + personFL);
-              console.log("people " + peopleFL);
-              var reg = new RegExp(personFL[0], "g");
-              article.text = article.text.replace(reg, peopleFL[0]);
-              
-              var middleOrLast = personFL[personFL.length - 1];
-              var count = 1;
-              
-              if(personFL.length > 2)
+              for(var key in entities)
               {
-                middleOrLast = "";
-                while(count < personFL.length)
+                console.log(key, entities[key]);
+                if(entities[key].type == "Person" && friends[0])
                 {
-                  middleOrLast += personFL[count] + "|";
-                  count++;
+                  people[entities[key].text] = friends.shift();
                 }
-                middleOrLast = middleOrLast.substr(0,middleOrLast.length-1);
+              }
+
+              //var personFL = [];
+              //var peopleFL = [];
+
+              for(var person in people)
+              {
+                article.text = article.text.replace(person, people[person]);
+              }
+
+              for(var person in people)
+              {
+                var personFL = person.split(" ");
+                var peopleFL = people[person].split(" ");
+                article.text = article.text.replace(personFL[0], peopleFL[0]);
+                article.text = article.text.replace(personFL[personFL.length - 1], peopleFL[peopleFL.length - 1]);
               }
 
 
-              reg = new RegExp(middleOrLast, "g");
-              article.text = article.text.replace(reg, peopleFL[peopleFL.length - 1]);
-            }
-
-
-            res.json(200, article);
-          })
+              res.json(200, article);
+            })
+          }
         })
     });
   };
-
-  generation();
 }
 
 // Creates a new generate in the DB.
