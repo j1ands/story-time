@@ -50,7 +50,6 @@ exports.show = function(req, res) {
     return "q=" + req.params.type + "&page=" + num + "&api-key=";
   }
 
-
   function generation() 
   {
     nytAPI.search(newyorksearchterms(randNum(100)), function(content)
@@ -59,10 +58,28 @@ exports.show = function(req, res) {
         //res.json(200, content.response.docs[0]);
         // alchemyapi.text('url', content.response.docs[0].web_url, {}, function(cleanText)
         // {
-        alchemyapi.entities('url', content.response.docs[randNum(10)].web_url, {showSourceText: 1}, function(alchemyResponse)
+        //var tempRand = randNum(10);
+        var tempArr = [0,1,2,3,4,5,6,7,8,9];
+        randomSort(tempArr);
+        var tempDoc = content.response.docs[tempArr.shift()];
+
+          while(tempDoc.word_count < 500)
+          {
+            if(!tempArr[0]){return generation();}
+            tempDoc = content.response.docs[tempArr.shift()];
+            
+            //return generation();
+          }
+
+
+
+        var articleHeadLine = tempDoc.headline.main;
+        console.log("doc info!", tempDoc);
+
+        alchemyapi.entities('url', tempDoc.web_url, {showSourceText: 1}, function(alchemyResponse)
         {
           //console.log("response!, ", alchemyResponse);
-          var article = {text: alchemyResponse.text};
+          var article = {text: alchemyResponse.text, headline: articleHeadLine};
           article.real = article.text;
           //console.log("ARTCILE LENGTH", article.text.length);
 
@@ -127,7 +144,7 @@ exports.show = function(req, res) {
                 middleOrLast = "";
                 while(count < personFL.length)
                 {
-                  middleOrLast += personFL[count] + "|";
+                  middleOrLast += personFL[count].length > 2 ? personFL[count] + "|" : "";
                   count++;
                 }
                 middleOrLast = middleOrLast.substr(0,middleOrLast.length-1);
@@ -138,6 +155,22 @@ exports.show = function(req, res) {
               article.text = article.text.replace(reg, peopleFL[peopleFL.length - 1]);
             }
 
+            article.text = "\n" + article.text;
+
+            var textArr = [];
+            var articleTextLength = article.text.length;
+            var wordcount = 0;
+
+            while(articleTextLength > 1000)
+            {
+              textArr.push(article.text.substr(wordcount, wordcount+1000));
+              wordcount += 1000;
+              articleTextLength -= 1000;
+            }
+
+            textArr.push(article.text.substr(wordcount, article.text.length));
+
+            article.text = textArr;
 
             res.json(200, article);
           })

@@ -1,6 +1,16 @@
 <div class="content-row" ng-controller="StoryCtrl as Story">
 	<section layout="row" layout-sm="column" layout-align="center center" style="margin-top:10%; margin-bottom:10%">
     	<md-progress-circular md-mode="indeterminate" ng-show="Story.emptyStory.value"></md-progress-circular>
-		<span ng-hide="Story.emptyStory.value" style="text-align:left;width:100%">{{bigres.ny.text}}</span>
+		<span class="ng-hide" style="text-align:left;width:100%">{{bigres.ny.text}}</span>
+		<div class="flipbook ng-hide" id="flipbook" style="text-align:center">
+			<div id="booktitle" class="hard"> Booktitle </div>
+			<div class="hard"></div>
+			<div id="page1"> Page 1 </div>
+			<div> Page 2 </div>
+			<div> Page 3 </div>
+			<div> Page 4 </div>
+			<div class="hard"></div>
+			<div class="hard"></div>
+		</div>
 	</section>
 </div>
