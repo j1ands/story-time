@@ -6,3 +6,5 @@ public
 client/bower_components
 dist
 /server/config/local.env.js
+/server/api/nyt/article_search_api_key.txt
+/server/api/alchemy/api_key.txt

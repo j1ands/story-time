@@ -1,11 +1,16 @@
 'use strict';
 
 angular.module('storytimeApp')
-  .controller('StoryCtrl', function ($scope, anchorSmoothScroll, nytApi, bigres, $location) {
-    var sctrl = this;
+  .controller('PersonalCtrl', function ($stateParams, $scope, bigres) {
+    $scope.message = 'Hello';
+
+    var pctrl = this;
+
+    pctrl.storyid = $stateParams.id;
+    bigres.get(pctrl.storyid);
     $scope.bigres = bigres.getNY();
 
-    sctrl.emptyStory = {value:true};
+    pctrl.emptyStory = {value:true};
 
     var flipbook = angular.element(document.getElementById('flipbook'));
     
@@ -22,20 +27,17 @@ angular.module('storytimeApp')
     }
 
     $scope.$watch('bigres.ny.$resolved', function(newValue, oldValue){
-        //debugger;
-        if(oldValue === false && newValue != oldValue)
-        {
-            sctrl.emptyStory.value = false;
-            // anchorSmoothScroll.scrollTo('flipbook');
-            sctrl.showStory('flipbook');
-        }
+    	if(oldValue === false && newValue != oldValue)
+    	{
+    		pctrl.emptyStory.value = false;
+    		pctrl.showStory('flipbook');
+    	}
     })
 
-    sctrl.showStory = function(eID)
+    pctrl.showStory = function(eID)
     {
     	var div = angular.element(document.getElementById(eID));
         div.removeClass("ng-hide");
-        anchorSmoothScroll.scrollTo('flipbook');
         if(eID == "flipbook")
         {
             //debugger;
@@ -62,28 +64,6 @@ angular.module('storytimeApp')
                 $("#flipbook").turn("addPage", element, i+3);                
             }
         }
-
     }
 
-    sctrl.select = function(type)
-    {
-    	nytApi.get(type);
-    	//debugger;
-    	sctrl.showStory('story');
-    }
-
-    sctrl.publish = function()
-    {
-        var storyID = bigres.post();
-        storyID.then(function(data)
-        {
-            //debugger;
-            console.log(data);
-            console.log(data.id);
-            $location.path('/personal/' + data.id);
-        })
-
-        //location.path(/personal/ + storyID);
-    }
-   
   });

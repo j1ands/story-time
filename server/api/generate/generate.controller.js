@@ -28,6 +28,40 @@ function randomSort(arr)
   }
 }
 
+
+// function nameReplace(text, people, friends)
+// {
+//   var peopleIndex = [];
+
+//   var textArr = text.split(" ");
+
+//   for(var i = 0; i < textArr.length; i++)
+//   {
+//     for(var x = 0; x < people.length; x++)
+//     {
+//       for(var y= 0; y < people[x].length; y++)
+//       {
+//         if(textArr[i] == people[x][y])
+//         {
+//           if(checkers[textArr[i].toLowerCase()])
+//           {
+//             if(textArr[i+1]){i++;}
+//             else{return;}
+//           }
+//           else
+//           {
+//             textArr[i] = y > 0 ? friends[friends[x].length - 1] : friends[0];
+//             if(textArr[i+1]){i++;}
+//             else{return;}
+//           }
+//         }
+//       }
+//     }
+//   }
+
+//   text = textArr.join(" ");
+// }
+
 // Get list of generates
 exports.index = function(req, res) {
   Generate.find(function (err, generates) {
@@ -47,14 +81,14 @@ exports.show = function(req, res) {
   //var newyorksearchterms = "q=" + req.params.type + "&page=" + randNum(100) + "&api-key=";
   function newyorksearchterms(num)
   {
-    return "q=" + req.params.type + "&page=" + num + "&api-key=";
+    return "q=" + req.params.type + "&type_of_material=news&page=" + num + "&api-key=";
   }
 
   function generation() 
   {
     nytAPI.search(newyorksearchterms(randNum(100)), function(content)
     {
-        console.log("content!, ", content);
+        //console.log("content!, ", content);
         //res.json(200, content.response.docs[0]);
         // alchemyapi.text('url', content.response.docs[0].web_url, {}, function(cleanText)
         // {
@@ -79,7 +113,7 @@ exports.show = function(req, res) {
         alchemyapi.entities('url', tempDoc.web_url, {showSourceText: 1}, function(alchemyResponse)
         {
           //console.log("response!, ", alchemyResponse);
-          var article = {text: alchemyResponse.text, headline: articleHeadLine};
+          var article = {text: alchemyResponse.text, headline: articleHeadLine, nyurl: tempDoc.web_url};
           article.real = article.text;
           //console.log("ARTCILE LENGTH", article.text.length);
 
@@ -103,69 +137,137 @@ exports.show = function(req, res) {
             randomSort(friends);
 
             //console.log("user", user);
+            article.name = user.name;
             friends.unshift(user.name);
             //console.log("facebook", user.facebook);
 
             var people = {};
 
+            var checkers = {
+              president: true,
+              'mr.': true,
+              'mrs.': true,
+              'ms.': true,
+              miss: true,
+              sir: true,
+              'dr.': true,
+              doctor: true
+              }            
+
             for(var key in entities)
             {
-              console.log(key, entities[key]);
+              //console.log(key, entities[key]);
               if(entities[key].type == "Person" && friends[0])
               {
+                if(!Object.keys(people).length)
+                {
+                  var titlereg = new RegExp(entities[key].text, "g");
+                  article.headline = article.headline.replace(titlereg, friends[0]);
+                }
                 people[entities[key].text] = friends.shift();
               }
             }
+
+            article.headline = article.headline.replace()
 
             //var personFL = [];
             //var peopleFL = [];
 
             for(var person in people)
             {
-              var reg = new RegExp(person, "g");
+              var check = person.split(" ")[0].toLowerCase();
+              if(checkers[check])
+              {
+                //person.replace(/)
+                var reg = new RegExp(check + "+\\s?", "g");
+                var modPerson = person.replace(reg, "");
+                var regTwo = new RegExp(modPerson, "g");
+                article.text = article.text.replace(regTwo, people[person]);
+              }
+              else
+              {
+                var reg = new RegExp(person, "g");
 
-              article.text = article.text.replace(reg, people[person]);
+                article.text = article.text.replace(reg, people[person]);
+              }
             }
 
             for(var person in people)
             {
               var personFL = person.split(" ");
               var peopleFL = people[person].split(" ");
-              console.log("person " + personFL);
-              console.log("people " + peopleFL);
-              var reg = new RegExp(personFL[0], "g");
-              article.text = article.text.replace(reg, peopleFL[0]);
-              
-              var middleOrLast = personFL[personFL.length - 1];
-              var count = 1;
-              
-              if(personFL.length > 2)
+              //console.log("person " + personFL);
+              //console.log("people " + peopleFL);
+
+              if(checkers[personFL[0].toLowerCase()])
               {
-                middleOrLast = "";
-                while(count < personFL.length)
+                var middleOrLast = personFL[personFL.length - 1];
+
+                if(personFL.length > 2)
                 {
-                  middleOrLast += personFL[count].length > 2 ? personFL[count] + "|" : "";
-                  count++;
+                  var reg = new RegExp(personFL[1], "g");
+                  article.text = article.text.replace(reg, peopleFL[0]);
+                  
+                  //var middleOrLast = personFL[personFL.length - 1];
+                  var count = 2;  
+
+                  middleOrLast = "";
+                  while(count < personFL.length)
+                  {
+                    middleOrLast += personFL[count].length > 2 ? personFL[count] + "|" : "";
+                    count++;
+                  }
+                  middleOrLast = middleOrLast.substr(0,middleOrLast.length-1);
                 }
-                middleOrLast = middleOrLast.substr(0,middleOrLast.length-1);
+
+                else
+                {
+                  var reg = new RegExp(personFL[0], "g");
+                  article.text = article.text.replace(reg, peopleFL[0]);
+                }
+
+                reg = new RegExp(middleOrLast, "g");
+                article.text = article.text.replace(reg, peopleFL[peopleFL.length - 1]);
               }
 
+              else
+              {
+                var reg = new RegExp(personFL[0], "g");
+                article.text = article.text.replace(reg, peopleFL[0]);
+                
+                var middleOrLast = personFL[personFL.length - 1];
+                var count = 1;
+                
+                if(personFL.length > 2)
+                {
+                  middleOrLast = "";
+                  while(count < personFL.length)
+                  {
+                    middleOrLast += personFL[count].length > 2 ? personFL[count] + "|" : "";
+                    count++;
+                  }
+                  middleOrLast = middleOrLast.substr(0,middleOrLast.length-1);
+                }
 
-              reg = new RegExp(middleOrLast, "g");
-              article.text = article.text.replace(reg, peopleFL[peopleFL.length - 1]);
+                reg = new RegExp(middleOrLast, "g");
+                article.text = article.text.replace(reg, peopleFL[peopleFL.length - 1]);
+              }
             }
 
             article.text = "\n" + article.text;
 
             var textArr = [];
+
             var articleTextLength = article.text.length;
+
             var wordcount = 0;
 
             while(articleTextLength > 1000)
             {
-              textArr.push(article.text.substr(wordcount, wordcount+1000));
+              textArr.push(article.text.substring(wordcount, wordcount+1000));
               wordcount += 1000;
               articleTextLength -= 1000;
+              console.log(textArr[textArr.length - 1]);
             }
 
             textArr.push(article.text.substr(wordcount, article.text.length));
