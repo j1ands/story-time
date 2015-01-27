@@ -4,6 +4,7 @@ angular.module('storytimeApp')
   .controller('StoryCtrl', function ($scope, anchorSmoothScroll, nytApi, bigres, $location) {
     var sctrl = this;
     $scope.bigres = bigres.getNY();
+    //$scope.nyurl;
 
     sctrl.emptyStory = {value:true};
 
@@ -25,6 +26,7 @@ angular.module('storytimeApp')
         //debugger;
         if(oldValue === false && newValue != oldValue)
         {
+            //$scope.nyurl = $scope.bigres.ny.
             sctrl.emptyStory.value = false;
             // anchorSmoothScroll.scrollTo('flipbook');
             sctrl.showStory('flipbook');
@@ -35,7 +37,7 @@ angular.module('storytimeApp')
     {
     	var div = angular.element(document.getElementById(eID));
         div.removeClass("ng-hide");
-        anchorSmoothScroll.scrollTo('flipbook');
+        anchorSmoothScroll.scrollTo(eID);
         if(eID == "flipbook")
         {
             //debugger;

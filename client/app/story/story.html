@@ -1,12 +1,15 @@
 <div class="content-row" ng-controller="StoryCtrl as Story">
-	<section id="flip" layout="row" layout-sm="column" layout-align="center center" style="margin-top:10%; margin-bottom:10%">
+	<section id="flip" layout="row" layout-sm="column" layout-align="center center" style="margin-top:10%; margin-bottom:2%">
     	<md-progress-circular md-mode="indeterminate" ng-show="Story.emptyStory.value"></md-progress-circular>
 		<div class="flipbook ng-hide" id="flipbook" style="text-align:center">
 			<div id="booktitle" class="hard"> Booktitle </div>
 			<div id="page1"> Page 1 </div>
 		</div>
 	</section>
-	<section layout="row" layout-sm="column" layout-align="center center" style="margin-top:10%; margin-bottom:10%">
+	<section layout="row" layout-sm="column" layout-align="center center"">
+		<a href="{{bigres.ny.nyurl}}" ng-hide="Story.emptyStory.value"><span>New York Times Link</span></a>
+	</section>
+	<section layout="row" layout-sm="column" layout-align="center center" style="margin-top:2%; margin-bottom:10%">
 		<md-button class="md-raised" ng-hide="Story.emptyStory.value" id="pub-button" ng-click="Story.publish()">Publish</md-button>
 	</section>
 </div>
